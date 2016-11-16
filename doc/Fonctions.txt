@@ -1,0 +1,47 @@
+public void Init(String data){
+	tabL = new Groupe[9] -> new Groupe();
+	tabC = new Groupe[9] -> new Groupe();
+	tabCa = new Groupe[3][3] -> new Groupe();
+	String[] tabData = data.split(" "); //separateur espace
+	
+	for(int i=0; i < tabData.lenght; i++){
+		Case case;
+		if(tabData[i] == "0"){
+			case = new Case NonBloquee();
+		}
+		else{
+			case = new CaseBloquee(tabData[i]);
+		}
+		
+		int numL = i/9;
+		int numC = i%9;
+		tabL[numL].add(case);
+		tabC[numC].add(case);
+		tabCa[numL/3][numC/3].add(case);
+	}
+}
+
+public Case{
+	public MAJ (Valeur numVal){
+		v = numVal;
+		conf = false;
+		
+		for(groupe g = tab){
+			if(g.estEnConflit(this)){
+				conf = true;
+			}
+		}
+	}
+}
+
+//Groupe
+
+public boolean estEnConflit(Case c){
+	boolean retour = false;
+	for(Case c2 = tab){
+		if(c != c2 && c.v == c2.v){
+			retour = true;
+		}
+	}
+	return retour;
+}
