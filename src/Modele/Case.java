@@ -9,6 +9,9 @@ package Modele;
  *
  * @author david
  */
-public class Case {
+public abstract class Case {
+    private Valeur v;
+    private Groupe[] tab = new Groupe[3];
+    
     
 }

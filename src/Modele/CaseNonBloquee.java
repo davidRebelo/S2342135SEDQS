@@ -9,6 +9,6 @@ package Modele;
  *
  * @author david
  */
-public class Groupe {
-    private Case[] tab = new Case[9];
+public class CaseNonBloquee extends Case {
+    
 }

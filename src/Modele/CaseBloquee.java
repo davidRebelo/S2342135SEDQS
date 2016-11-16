@@ -9,6 +9,10 @@ package Modele;
  *
  * @author david
  */
-public class Groupe {
-    private Case[] tab = new Case[9];
+public class CaseBloquee extends Case {
+    
+    public CaseBloquee(EQUIPA val
+    {
+        this.val = equipa;
+    }
 }
