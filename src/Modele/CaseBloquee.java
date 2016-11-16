@@ -11,8 +11,7 @@ package Modele;
  */
 public class CaseBloquee extends Case {
     
-    public CaseBloquee(EQUIPA val
-    {
-        this.val = equipa;
+    public CaseBloquee(String val){
+        this.v = Integer.parseInt(val);
     }
 }

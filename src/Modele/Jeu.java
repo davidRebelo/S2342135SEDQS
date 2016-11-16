@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package Modele;
-import java.io.*;
-
 
 /**
  *
@@ -27,7 +25,7 @@ public class Jeu {
 	
 	for(int i=0; i < tabData.length; i++){
 		Case caree;
-		if(tabData[i] == "0"){
+		if("0".equals(tabData[i])){
 			caree = new CaseNonBloquee();
 		}
 		else{
