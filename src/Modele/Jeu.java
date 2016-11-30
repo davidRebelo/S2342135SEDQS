@@ -14,7 +14,7 @@ public class Jeu {
     private Groupe[] tabC;
     private Groupe[][] tabCa;
     
-    public void Init(String data){
+    public void init(String data){
 	this.tabL = new Groupe[9];
 	this.tabC = new Groupe[9];
 	this.tabCa = new Groupe[3][3];
