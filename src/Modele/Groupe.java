@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 /**
@@ -23,12 +18,16 @@ public class Groupe {
     }
     
     public boolean estEnConflit(int v){
-        for (Case c : tab) {
+        for (Case c : tab){
             if (c.getV() == v){
                 return true;
             }
         }
         return false;
+    }
+    
+    public int getValeurDansLigne(int n){
+        return this.tab[n].getV();
     }
 
     public Case[] getTab() {

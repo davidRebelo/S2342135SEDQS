@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 /**
@@ -14,7 +9,6 @@ public abstract class Case {
     protected int v;
     protected Groupe[] tab = new Groupe[3];
     
-    
     public boolean MAJ(int numVal){
         boolean conf = false;
         for (Groupe g : tab) {
@@ -22,6 +16,9 @@ public abstract class Case {
                 conf = true;
             }
         }
+        
+        if(conf) this.v = numVal;
+        
         return conf;
     }
 

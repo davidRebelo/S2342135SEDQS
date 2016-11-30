@@ -22,14 +22,19 @@ public enum Valeur {
     Neuf(9);
     
     protected int valeur;
+
+
     
     /** Constructeur **/
-    Valeur(int pValeur){
-        this.valeur = pValeur;
+    Valeur(int valeur){
+        this.valeur = valeur;
     }
     
     public int getValeur(){
         return this.valeur;
     }
     
+    public void setValeur(int valeur) {
+        this.valeur = valeur;
+    }
 }

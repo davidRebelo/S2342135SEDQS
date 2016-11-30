@@ -13,8 +13,12 @@ public class Jeu {
     private Groupe[] tabL;
     private Groupe[] tabC;
     private Groupe[][] tabCa;
-    
-    public Jeu(){}
+
+    public Jeu(){
+       /* pour test (sans charger le sudoku depuis un fichier) */ 
+       String tabl = "5 3 0 0 7 0 0 0 0 6 0 0 1 9 5 0 0 0 0 9 8 0 0 0 0 6 0 8 0 0 0 6 0 0 0 3 4 0 0 8 0 3 0 0 1 7 0 0 0 2 0 0 0 6 0 6 0 0 0 0 2 8 0 0 0 0 4 1 9 0 0 5 0 0 0 0 8 0 0 7 9";
+       Init(tabl);
+    }
     
     public void Init(String data){
 	this.tabL = new Groupe[9];
@@ -26,10 +30,10 @@ public class Jeu {
 	for(int i=0; i < tabData.length; i++){
 		Case caree;
 		if("0".equals(tabData[i])){
-			caree = new CaseNonBloquee();
+                    caree = new CaseNonBloquee();
 		}
 		else{
-			caree = new CaseBloquee(tabData[i]);
+                    caree = new CaseBloquee(tabData[i]);
 		}
 		
 		int numL = i/9;
@@ -39,4 +43,34 @@ public class Jeu {
 		tabCa[numL/3][numC/3].add(caree);
 	}
     }
+    
+    public int getValeur(int l, int c){
+        return this.tabL[l].getValeurDansLigne(c);
+    }
+
+    public Groupe[] getTabL() {
+        return tabL;
+    }
+
+    public void setTabL(Groupe[] tabL) {
+        this.tabL = tabL;
+    }
+
+    public Groupe[] getTabC() {
+        return tabC;
+    }
+
+    public void setTabC(Groupe[] tabC) {
+        this.tabC = tabC;
+    }
+
+    public Groupe[][] getTabCa() {
+        return tabCa;
+    }
+
+    public void setTabCa(Groupe[][] tabCa) {
+        this.tabCa = tabCa;
+    }
+    
+    
 }
