@@ -13,12 +13,6 @@ public class Jeu {
     private Groupe[] tabL;
     private Groupe[] tabC;
     private Groupe[][] tabCa;
-
-    public Jeu(){
-       /* pour test (sans charger le sudoku depuis un fichier) */ 
-       String tabl = "5 3 0 0 7 0 0 0 0 6 0 0 1 9 5 0 0 0 0 9 8 0 0 0 0 6 0 8 0 0 0 6 0 0 0 3 4 0 0 8 0 3 0 0 1 7 0 0 0 2 0 0 0 6 0 6 0 0 0 0 2 8 0 0 0 0 4 1 9 0 0 5 0 0 0 0 8 0 0 7 9";
-       Init(tabl);
-    }
     
     public void Init(String data){
 	this.tabL = new Groupe[9];
@@ -26,6 +20,17 @@ public class Jeu {
 	this.tabCa = new Groupe[3][3];
 	String[] tabData = data.split(" "); //separateur espace
         
+        for (int initGL = 0; initGL < tabL.length; ++initGL){
+            tabL[initGL] = new Groupe();
+        }
+        for (int initGC = 0; initGC < tabC.length; ++initGC){
+            tabC[initGC] = new Groupe();
+        }
+        for (int initGCa1 = 0; initGCa1 < tabCa.length; ++initGCa1){
+            for (int initGCa2 = 0; initGCa2 < tabCa[initGCa1].length; ++initGCa2){
+                tabCa[initGCa1][initGCa2] = new Groupe();
+            }
+        }
 	
 	for(int i=0; i < tabData.length; i++){
 		Case caree;
