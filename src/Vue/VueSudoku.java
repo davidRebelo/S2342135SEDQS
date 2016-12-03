@@ -17,12 +17,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.FontWeight;
 
 import Modele.Jeu;
 import Modele.Groupe;
 import Modele.Case;
-
 
 /**
  *
@@ -44,36 +45,32 @@ public class VueSudoku extends Application {
         Jeu grilleJeu = new Jeu();
         grilleJeu.init();
         
-        
         BorderPane border = new BorderPane();
         GridPane gridPane = new GridPane();
         
         //config GridPane
-        gridPane.setGridLinesVisible(true);
         gridPane.setPadding(new Insets(10,10,10,10));
-        gridPane.setStyle("-fx-padding: 10px; -fx-border-insets: 10px; -fx-background-insets:10px; -fx-background-color:white;");
+        gridPane.setStyle("-fx-background-color:white;");
+        
         Text t;
-        int valeur_tableau;
         int colonne = 0;
         int rangee = 0;
         
         //parcourt de toute les valeurs du sudoku
         for (Groupe lignes_tableau:grilleJeu.getTabL()){
             for (Case case_tableau:lignes_tableau.getTab()){
-                valeur_tableau = case_tableau.getV();
+                TextField txt = new TextField();
+                configTextField(txt, case_tableau);
 
-                if(valeur_tableau == 0) t = new Text(" ");
-                else t = new Text(Integer.toString(valeur_tableau));
-                   
-                //config default text
-                t.setWrappingWidth(30);
-                t.setFont(Font.font("Verdana", 25));
-                t.setTextAlignment(TextAlignment.CENTER);
-                t.setFill(Color.BLACK);
+                txt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        txt.selectAll();
+                    }
+                });
                 
-
-                gridPane.add(t, colonne++, rangee);
-                
+                gridPane.add(txt, colonne++, rangee);
+ 
                 if (colonne > 8){
                     colonne = 0;
                     rangee++;
@@ -120,7 +117,30 @@ public class VueSudoku extends Application {
         btn.setMinWidth(150);
         btn.setStyle("-fx-padding: 15px; -fx-border-insets: 6px; -fx-background-insets:6px;");
     }
-            
     
+    private void configTextField(TextField txt, Case c){
+        txt.setPrefHeight(45);
+        txt.setPrefWidth(45);
+        txt.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        txt.setStyle("-fx-border-color: black;");
+        
+        if(c.getV() != 0){
+            txt.setDisable(true);
+            txt.setText(String.valueOf(c.getV()));
+            txt.setOpacity(0.6);
+        }
+        else{
+            txt.setDisable(false);
+            txt.setText("");
+        }        
+        
+        txt.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                txt.selectAll();
+            }
+        });
+
+    }    
         
 }
