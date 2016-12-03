@@ -5,6 +5,8 @@
  */
 package Modele;
 
+import java.io.FileNotFoundException;
+
 /**
  *
  * @author david
@@ -13,12 +15,22 @@ public class Jeu {
     private Groupe[] tabL;
     private Groupe[] tabC;
     private Groupe[][] tabCa;
+    private String tab;
     
-    public void init(String data){
-	this.tabL = new Groupe[9];
+    public void init(){
+        this.tabL = new Groupe[9];
 	this.tabC = new Groupe[9];
 	this.tabCa = new Groupe[3][3];
-	String[] tabData = data.split(" "); //separateur espace
+        
+        //lecture du sudoku depuis un fichier
+        try{
+            this.tab = LectureFichiers.LireDepuisFichier("sudoku/sudoku1.txt");
+        }
+        catch (FileNotFoundException erreur){
+            System.out.println(erreur.toString());
+        }
+        
+	String[] tabData = tab.split("");
         
         for (int initGL = 0; initGL < tabL.length; ++initGL){
             tabL[initGL] = new Groupe();
