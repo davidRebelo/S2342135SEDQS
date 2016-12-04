@@ -64,7 +64,16 @@ public class Jeu {
     public int getValeur(int l, int c){
         return this.tabL[l].getValeurDansLigne(c);
     }
-
+    
+    public Case obtenirCase(int ligne,int colonne){
+        Case c = tabL[ligne].tab[colonne];
+        return c;
+    }
+    
+    public void Majcase(int ligne,int colonne,int valeur){
+        Case c = obtenirCase(ligne,colonne);
+        c.MAJ(valeur);
+    }
     public Groupe[] getTabL() {
         return tabL;
     }
