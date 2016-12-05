@@ -5,12 +5,14 @@
  */
 package Vue;
 
+import Controleur.ControleurMenu;
 import Modele.Jeu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -18,13 +20,18 @@ import javafx.scene.layout.GridPane;
  */
 public class VueMenuB extends VueSudoku{
     
-    public VueMenuB(Jeu grilleJeu) {
+    protected ControleurMenu cMenu;
+    
+    public VueMenuB(Jeu grilleJeu, ControleurMenu cMenu) {
         super(grilleJeu);
+        this.cMenu = cMenu;
         CreerMenu(grilleJeu);
     }
     
     private void CreerMenu(Jeu grilleJeu){
         gridPane = new GridPane();
+        Text resultat = new Text("");
+        resultat.setStyle("-fx-padding: 30 30 30 30;");
         
         //configuration des boutons
         Button btn_verif = new Button();
@@ -34,12 +41,20 @@ public class VueMenuB extends VueSudoku{
         configBoutonMenu(btn_verif, "Verifier");
         configBoutonMenu(btn_nettoyer, "Nettoyer");
         configBoutonMenu(btn_ouvrir_sudoku, "Ouvrir");
-
-        btn_verif.setOnAction(new EventHandler<ActionEvent>() {
-            
+        
+        btn_ouvrir_sudoku.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                System.out.println("Ouvrir un fichier");
+                cMenu.ouvrirFichier();
+            }
+        });
+        
+        btn_verif.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(grilleJeu.estFinit()) resultat.setText("Vous avez reussi! Bravo!");
+                else resultat.setText("Essayer encore!");
             }
         });
 
@@ -48,6 +63,7 @@ public class VueMenuB extends VueSudoku{
         gridPane.add(btn_verif, 50, 50);
         gridPane.add(btn_nettoyer, 50, 40);
         gridPane.add(btn_ouvrir_sudoku, 50, 30);
+        gridPane.add(resultat, 50, 60);
     }
     
     private void configBoutonMenu(Button btn, String text){

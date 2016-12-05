@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Controleur.ControleurJeu;
 import javafx.scene.layout.GridPane;
 import Modele.Jeu;
 

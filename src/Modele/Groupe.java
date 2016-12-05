@@ -12,14 +12,24 @@ public class Groupe {
         for(int i = 0; i < tab.length && fait == false; i++){
             if(tab[i] == null){
                 tab[i] = c;
+                tab[i].ajouterGroupe(this);
                 fait = true;
             }
         }
     }
     
-    public boolean estEnConflit(int v){
+    public boolean estEnConflit(Case c_demander){
         for (Case c : tab){
-            if (c.getV() == v){
+            if (c.getV() == c_demander.getV() && c_demander != c){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean estEnConflit(int nombre){
+        for (Case c : tab){
+            if (c.getV() == nombre){
                 return true;
             }
         }

@@ -5,18 +5,21 @@
  */
 package Vue;
 
+import Controleur.ControleurGrille;
 import Modele.Case;
 import Modele.Groupe;
 import Modele.Jeu;
+import java.util.Observable;
+import java.util.Observer;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 /**
  *
@@ -24,8 +27,11 @@ import javafx.scene.text.Text;
  */
 public class VueGrille extends VueSudoku {
     
-    public VueGrille(Jeu grilleJeu){
+    protected ControleurGrille cGrille;
+    
+    public VueGrille(Jeu grilleJeu, ControleurGrille cGrille){
         super(grilleJeu);
+        this.cGrille = cGrille;
         CreerGrille(grilleJeu);
     }
 
@@ -35,8 +41,7 @@ public class VueGrille extends VueSudoku {
         //config GridPane
         gridPane.setPadding(new Insets(10,10,10,10));
         gridPane.setStyle("-fx-background-color:white;");
-        
-        Text t;
+
         int colonne = 0;
         int rangee = 0;
         
@@ -44,7 +49,8 @@ public class VueGrille extends VueSudoku {
         for (Groupe lignes_tableau:grilleJeu.getTabL()){
             for (Case case_tableau:lignes_tableau.getTab()){
                 TextField txt = new TextField();
-                configTextField(txt, case_tableau);
+                
+                configTextField(txt, case_tableau, colonne, rangee);
                 
                 gridPane.add(txt, colonne++, rangee);
  
@@ -52,17 +58,18 @@ public class VueGrille extends VueSudoku {
                     colonne = 0;
                     rangee++;
                 }
+
             }
         }
         
     }
 
-    private void configTextField(TextField txt, Case c){
+    private void configTextField(TextField txt, Case c, final int col, final int rangee){
         txt.setPrefHeight(45);
         txt.setPrefWidth(45);
         txt.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         txt.setStyle("-fx-border-color: black;");
-        
+        txt.setId(String.valueOf(((rangee*100)+col)));
         if(c.getV() != 0){
             txt.setDisable(true);
             txt.setText(String.valueOf(c.getV()));
@@ -77,6 +84,43 @@ public class VueGrille extends VueSudoku {
             @Override
             public void handle(MouseEvent event) {
                 txt.selectAll();
+            }
+        });
+        
+        //Verification si l'utilisateur introduit un numero
+        txt.setTextFormatter(new TextFormatter<Integer>((TextFormatter.Change ch) -> {
+            if(ch.getControlNewText().matches("-?\\d")){
+                return ch;
+            }
+            else{   
+                return null;
+            }
+        }));
+        
+        txt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(cGrille.verifierConflit(newValue, c)) txt.setStyle("-fx-border-color: red;");
+            else txt.setStyle("-fx-border-color: black;");
+        });
+        
+        //En cas de mis a jour du jeu les case se mette a jour si elles sont differente 
+        grilleJeu.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                Case c_up = grilleJeu.getTabL()[rangee].getTab()[col];
+                txt.setStyle("-fx-border-color: black;");
+                if(c_up != c){
+                    if(c_up.getV() != 0){
+                        txt.setDisable(true);
+                        txt.setText(String.valueOf(c_up.getV()));
+                        txt.setOpacity(0.6);
+                    }                   
+                }
+                if(c_up.getV() == 0){
+                    txt.setDisable(false);
+                    txt.clear();
+                    txt.setText("");
+                    txt.setOpacity(1);
+                } 
             }
         });
 

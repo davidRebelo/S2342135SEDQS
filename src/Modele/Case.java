@@ -11,15 +11,37 @@ public abstract class Case {
     
     public boolean MAJ(int numVal){
         boolean conf = false;
+        this.v = numVal;
+        
         for (Groupe g : tab) {
-            if (g.estEnConflit(numVal)){
+            if (g.estEnConflit(this)){
                 conf = true;
             }
         }
         
-        if(conf) this.v = numVal;
+        return conf;
+    }
+    
+    public boolean estEnConflit(){
+        boolean conf = false;
+        
+        for (Groupe g : tab) {
+            if (g.estEnConflit(this)){
+                conf = true;
+            }
+        }
         
         return conf;
+    }
+    
+    public void ajouterGroupe(Groupe g){
+        boolean fait = false;
+        for(int i = 0; i < tab.length && fait == false; i++){
+            if(tab[i] == null){
+                tab[i] = g;
+                fait = true;
+            }
+        }
     }
 
     public int getV() {
