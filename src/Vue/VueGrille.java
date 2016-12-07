@@ -52,6 +52,7 @@ public class VueGrille extends VueSudoku {
         int rangee_case_dans_region = 0, colonne_region = 0, colonne_reel=0;
         int n_cicle_col=0, n_cicle_rang=0;
         GridPane region = new GridPane();
+        region.setPadding(new Insets(3,3,3,3));
         
         //parcourt de toute les valeurs du sudoku
         Groupe[][] ligne_de_regions = grilleJeu.getTabCa();
