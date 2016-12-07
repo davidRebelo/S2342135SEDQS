@@ -12,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 /**
  *
@@ -21,55 +20,76 @@ import javafx.scene.text.Text;
 public class VueMenuB extends VueSudoku{
     
     protected ControleurMenu cMenu;
+    protected boolean verification_auto_actif;
     
     public VueMenuB(Jeu grilleJeu, ControleurMenu cMenu) {
         super(grilleJeu);
         this.cMenu = cMenu;
-        CreerMenu(grilleJeu);
+        verification_auto_actif = false;
+        CreerMenuBouton(grilleJeu);
     }
-    
-    private void CreerMenu(Jeu grilleJeu){
+
+    private void CreerMenuBouton(Jeu grilleJeu){
         gridPane = new GridPane();
-        Text resultat = new Text("");
-        resultat.setStyle("-fx-padding: 30 30 30 30;");
         
         //configuration des boutons
-        Button btn_verif = new Button();
+        Button btn_verif_auto = new Button();
         Button btn_nettoyer = new Button();
-        Button btn_ouvrir_sudoku = new Button();
+        Button btn_quit = new Button();
         
-        configBoutonMenu(btn_verif, "Verifier");
+        configBoutonMenu(btn_verif_auto, "Activer AutoVerif");
         configBoutonMenu(btn_nettoyer, "Nettoyer");
-        configBoutonMenu(btn_ouvrir_sudoku, "Ouvrir");
-        
-        btn_ouvrir_sudoku.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Ouvrir un fichier");
-                cMenu.ouvrirFichier();
-            }
-        });
-        
-        btn_verif.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(grilleJeu.estFinit()) resultat.setText("Vous avez reussi! Bravo!");
-                else resultat.setText("Essayer encore!");
-            }
-        });
+        configBoutonMenu(btn_quit, "Quitter");
 
         gridPane.setPadding(new Insets(10,10,10,10));
         
-        gridPane.add(btn_verif, 50, 50);
-        gridPane.add(btn_nettoyer, 50, 40);
-        gridPane.add(btn_ouvrir_sudoku, 50, 30);
-        gridPane.add(resultat, 50, 60);
+        gridPane.add(btn_verif_auto, 1, 1);
+        gridPane.add(btn_nettoyer, 2, 1);
+        gridPane.add(btn_quit, 3, 1);
+        
+        evenementBoutons(btn_verif_auto, btn_nettoyer, btn_quit);
     }
+    
     
     private void configBoutonMenu(Button btn, String text){
         btn.setText(text);
-        btn.setMinWidth(150);
-        btn.setStyle("-fx-padding: 15px; -fx-border-insets: 6px; -fx-background-insets:6px;");
+        btn.setMinWidth(135);
+        btn.setStyle("-fx-padding: 13px; -fx-border-insets: 6px; -fx-background-insets:6px;");
     }
     
+    private void evenementBoutons(Button btn_verif_auto, Button btn_nettoyer, Button btn_quit){
+        btn_verif_auto.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                verification_auto_actif = (!verification_auto_actif);
+                if(verification_auto_actif){
+                    btn_verif_auto.setText("Desactiver AutoVerif");
+                }
+                else{
+                    btn_verif_auto.setText("Activer AutoVerif");
+                }
+            }
+        });
+        
+        btn_quit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+        
+        btn_nettoyer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cMenu.resetJeu();
+            }
+        });
+    }
+
+    public boolean isVerification_auto_actif() {
+        return verification_auto_actif;
+    }
+    
+    
+
 }

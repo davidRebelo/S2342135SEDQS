@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import java.io.FileNotFoundException;
@@ -31,7 +26,10 @@ public class Jeu extends Observable{
             System.out.println(erreur.toString());
         }
         
-	String[] tabData = tab.split("");
+        //les nombres sont separer par une virgule, ici on separe 
+        // tout les numeros recuperer
+        
+	String[] tabData = tab.split(",");
         
         for (int initGL = 0; initGL < tabL.length; ++initGL){
             tabL[initGL] = new Groupe();
@@ -48,7 +46,7 @@ public class Jeu extends Observable{
 	for(int i=0; i < tabData.length; i++){
 		Case caree;
 		if("0".equals(tabData[i])){
-                    caree = new CaseNonBloquee();
+                    caree = new CaseNonBloquee(tabData[i]);
 		}
 		else{
                     caree = new CaseBloquee(tabData[i]);
@@ -62,20 +60,21 @@ public class Jeu extends Observable{
 	}
     }
     
-    public void getJeuDepuisFichier(String chemin_fichier){
+    public void getJeuDepuisFichier(String chemin_fichier, boolean est_une_partie){
         this.tabL = new Groupe[9];
 	this.tabC = new Groupe[9];
 	this.tabCa = new Groupe[3][3];
+        boolean valeur_introduite_par_utilisateur;
         
         //lecture du sudoku depuis un fichier
         try{
             this.tab = LectureFichiers.LireDepuisFichier(chemin_fichier);
+
         }
         catch (FileNotFoundException erreur){
             System.out.println(erreur.toString());
         }
-        
-	String[] tabData = tab.split("");
+	String[] tabData = tab.split(",");
         
         for (int initGL = 0; initGL < tabL.length; ++initGL){
             tabL[initGL] = new Groupe();
@@ -91,8 +90,20 @@ public class Jeu extends Observable{
 	
 	for(int i=0; i < tabData.length; i++){
 		Case caree;
-		if("0".equals(tabData[i])){
-                    caree = new CaseNonBloquee();
+                valeur_introduite_par_utilisateur = false;
+                
+                // Si on charge une valeur dans un jeu deja jouer et que la 
+                // valeur a ete introduite par l'utilisateur alors la valeur 
+                // commence par un 'x' dans le fichier
+                if(est_une_partie && tabData[i].charAt(0)== 'x'){
+                    tabData[i] = tabData[i].replace("x", "");
+                    valeur_introduite_par_utilisateur = true;
+                }
+                
+                // si la valeur est 0 ou est une valeur jouer par l'utilisateur 
+                // alors la case est non bloquante
+		if("0".equals(tabData[i]) || valeur_introduite_par_utilisateur){
+                    caree = new CaseNonBloquee(tabData[i]);
 		}
 		else{
                     caree = new CaseBloquee(tabData[i]);
@@ -122,6 +133,55 @@ public class Jeu extends Observable{
             }
         }
         return estFinit;
+    }
+    
+    public void resetAllCaseNonBloq(){
+        for(Groupe tab: tabL){
+            for(Case c: tab.getTab()){
+                if(c instanceof CaseNonBloquee) c.setV(0);
+            }
+        }
+        notifierMAJ();
+    }
+    
+    public boolean resolution(){
+        boolean fait = false, finit = false, estInterdit = false;
+        int retour = 0;
+        
+        int[] valeur_anterieur = new int[9];
+        for(int init=0; init<valeur_anterieur.length; init++){
+            valeur_anterieur[init] = 0;
+        } 
+        
+        for(Groupe g: tabL){
+            Case[] c = g.getTab();
+            for(int x=0; x<c.length; x++){
+                fait = false;
+                if(valeur_anterieur[valeur_anterieur.length-1] != 0) return false;
+                for(int i = 1; i<=9 && fait == false; i++){
+
+                    for(int h=0; h<valeur_anterieur.length; h++){
+                         if(i == valeur_anterieur[h]) estInterdit = true;
+                    }
+                    if(estInterdit == false){
+                        if(c[x].MAJ(i) == false) fait = true;
+                    }
+                }
+                if(fait == false){
+                    System.out.printf("sad");
+                    retour++;
+                    x = x - retour;
+                    for(int j=0; j<valeur_anterieur.length; j++){
+                        if(valeur_anterieur[j] == 0) valeur_anterieur[j] = c[x].getV();
+                    }               
+                 }
+            }
+        }
+        
+        finit = estFinit();
+        notifierMAJ();
+        
+        return finit;
     }
     
     public int getValeur(int l, int c){
@@ -165,6 +225,26 @@ public class Jeu extends Observable{
     public void setTabCa(Groupe[][] tabCa) {
         this.tabCa = tabCa;
     }
+
+    public String getTab() {
+        return tab;
+    }
     
-    
+    public String toStringPourSauvegarde(){
+        String suite_valeurs = new String();
+        
+        for(Groupe tab: tabL){
+            for(Case c: tab.getTab()){
+                if(c instanceof CaseNonBloquee && c.getV()!= 0){
+                    //si la valeur avait ete introduite par un utilisateur elle est preceder par un 'x'
+                    //chaque valeur est suivi de une virgule pour que on puisse diferencier les numero dans un chargement de fichier
+                    suite_valeurs = suite_valeurs.concat("x"+c.getV()+",");
+                }
+                else{
+                    suite_valeurs = suite_valeurs.concat(""+c.getV()+",");
+                }
+            }
+        }
+        return suite_valeurs;
+    }
 }

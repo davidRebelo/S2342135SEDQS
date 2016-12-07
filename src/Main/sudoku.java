@@ -6,14 +6,11 @@
 package Main;
 
 import Controleur.ControleurGrille;
-import Controleur.ControleurJeu;
 import Controleur.ControleurMenu;
 import Modele.Jeu;
-import Modele.ModeleSudoku;
 import Vue.VueGrille;
 import Vue.VueMenuB;
-import java.util.Observable;
-import java.util.Observer;
+import Vue.VueMenuV;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -26,15 +23,7 @@ import javafx.stage.Stage;
  */
 public class sudoku extends Application{
     
-    ModeleSudoku m = new ModeleSudoku();
-    
-    public void initSudoku(){
-        //m.initModele();
-    }
-    
     public static void main(String[] args) {
-        sudoku s = new sudoku();
-        s.initSudoku();
         launch(args);
     }
     
@@ -42,16 +31,20 @@ public class sudoku extends Application{
     public void start(Stage primaryStage) throws Exception {
         Jeu grilleJeu = new Jeu();
         grilleJeu.init();
+        
+        boolean verification_auto_actif = false;
 
         BorderPane border = new BorderPane();
         
         ControleurGrille cGrille = new ControleurGrille(grilleJeu);
-        VueGrille vGrille = new VueGrille(grilleJeu, cGrille);
         ControleurMenu cMenu = new ControleurMenu(grilleJeu);
-        VueMenuB vMenu = new VueMenuB(grilleJeu, cMenu);
-
+        VueMenuB vMenuB = new VueMenuB(grilleJeu, cMenu);
+        VueMenuV vMenuV = new VueMenuV(grilleJeu, cMenu);
+        VueGrille vGrille = new VueGrille(grilleJeu, cGrille, vMenuB);
+        
+        border.setTop(vMenuV.getMenu());
         border.setCenter(vGrille.getGridPane());
-        border.setRight(vMenu.getGridPane());
+        border.setBottom(vMenuB.getGridPane());
         
         Scene scene = new Scene(border, Color.WHITE);
         

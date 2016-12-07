@@ -9,6 +9,14 @@ public abstract class Case {
     protected int v;
     protected Groupe[] tab = new Groupe[3];
     
+    public Case(int val){
+        this.v = val;
+    }
+    
+    public Case(String val){
+        this.v = Integer.parseInt(val);
+    }
+    
     public boolean MAJ(int numVal){
         boolean conf = false;
         this.v = numVal;

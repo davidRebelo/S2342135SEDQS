@@ -1,17 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 /**
  *
@@ -39,5 +36,19 @@ public class LectureFichiers {
         }
 
         return tableauSudoku;
+    }
+    
+    public static boolean SauvegarderDansFichier(String chemin, Jeu grilleJeu) throws IOException{
+        String text = grilleJeu.toStringPourSauvegarde();
+        
+        try{
+            PrintWriter fichier = new PrintWriter(new FileWriter(chemin));
+            fichier.println(text);
+            fichier.close();
+            return true;
+        } 
+        catch (IOException e) {
+            return false;
+        }
     }
 }

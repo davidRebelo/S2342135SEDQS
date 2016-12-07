@@ -5,9 +5,9 @@
  */
 package Vue;
 
-import Controleur.ControleurJeu;
 import javafx.scene.layout.GridPane;
 import Modele.Jeu;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -24,5 +24,13 @@ public class VueSudoku{
 
     public GridPane getGridPane() {
         return gridPane;
+    }
+    
+    protected Alert creerBoiteMessage(Alert.AlertType type, String message, String titre){
+        Alert boite = new Alert(type);
+        boite.setTitle(titre);
+        boite.setHeaderText(null);
+        boite.setContentText(message);
+        return boite;
     }
 }

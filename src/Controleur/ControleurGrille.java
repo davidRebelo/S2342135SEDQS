@@ -26,4 +26,11 @@ public class ControleurGrille extends ControleurJeu {
             return c.MAJ(v);
         }
     }
+    
+    public void MAJCase(String valeur, Case c){
+        int v = convertirStringAInt(valeur);
+        boolean MAJ = c.MAJ(v);
+    }
+    
+    
 }

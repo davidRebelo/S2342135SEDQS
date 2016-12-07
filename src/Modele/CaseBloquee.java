@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 /**
@@ -11,7 +6,12 @@ package Modele;
  */
 public class CaseBloquee extends Case {
     
-    public CaseBloquee(String val){
-        this.v = Integer.parseInt(val);
+    public CaseBloquee(int val) {
+        super(val);
     }
+    
+    public CaseBloquee(String val){
+        super(val);
+    }
+
 }

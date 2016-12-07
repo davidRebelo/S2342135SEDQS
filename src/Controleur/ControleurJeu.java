@@ -6,6 +6,7 @@
 package Controleur;
 
 import Modele.Jeu;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -26,6 +27,8 @@ public class ControleurJeu {
             return Integer.parseInt(s);
         }
     }
+    
+    
     
     
 }

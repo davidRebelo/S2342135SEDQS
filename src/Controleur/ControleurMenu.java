@@ -6,7 +6,10 @@
 package Controleur;
 
 import Modele.Jeu;
+import static Modele.LectureFichiers.SauvegarderDansFichier;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javafx.stage.FileChooser;
 
 /**
@@ -19,12 +22,12 @@ public class ControleurMenu extends ControleurJeu{
         super(grilleJeu);
     }
 
-    public boolean ouvrirFichier(){
+    public boolean ouvrirFichier(boolean partie_charger){
         try{
             FileChooser fc = new FileChooser();
             File fichier = fc.showOpenDialog(null);
             if(fichier != null){
-                grilleJeu.getJeuDepuisFichier(fichier.getAbsolutePath());
+                grilleJeu.getJeuDepuisFichier(fichier.getAbsolutePath(), partie_charger);
                 return true;
             }
             else{
@@ -36,4 +39,27 @@ public class ControleurMenu extends ControleurJeu{
         }
     }
     
+    public boolean sauvegarderFichier() throws IOException{
+        FileChooser fc = new FileChooser();
+        boolean ouvert;
+        fc.setTitle("Charger une partie");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TXT","*.txt"));
+        File dir = fc.showSaveDialog(null);
+        
+        ouvert = SauvegarderDansFichier(dir.getAbsolutePath(), grilleJeu);
+        return ouvert;
+    }
+    
+    public void resetJeu(){
+        grilleJeu.resetAllCaseNonBloq();
+    }
+    
+    public void resoudreJeu(){
+        grilleJeu.resolution();
+    }
+    
+    public boolean verifierSudoku(){
+        return grilleJeu.estFinit();
+    }
+
 }
